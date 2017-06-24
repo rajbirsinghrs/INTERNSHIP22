@@ -147,19 +147,59 @@ public class Internship {
     @Path("locations&{name}")
     @GET
     @Produces("application/json")
-    public String viewCGPA(@PathParam("name") String nme) throws SQLException, IOException {
+    public String LOCATION(@PathParam("name") String nme) throws SQLException, IOException {
         try {
             NewClass o = new NewClass();
             o.getConnection();
             
-            String sql = "SELECT*from LOCATION where STREET_NAME ='"+nme+"'";
+            String sql = "SELECT * from LOCATION where LOCATION_NAME ='"+nme+"'";
             ResultSet rs = o.rss(sql);
             if (rs.next()) {
                 status = "ok";
                 verma.accumulate("Status", status);
-                String lname=rs.getString("LOCATION");
-                verma.accumulate("Location", lname);
+                String snum=rs.getString("STREET_NUMBER");
+                verma.accumulate("STREET_NUMBER", snum);
+                String sname=rs.getString("STREET_NAME");
+                verma.accumulate("STREET_NAME", sname);
+                String ct=rs.getString("CITY");
+                verma.accumulate("CITY", ct);
+                String pcode=rs.getString("POSTALCODE");
+                verma.accumulate("POSTALCODE", pcode);
+                String pr=rs.getString("PROVINCE");
+                verma.accumulate("PROVINCE", pr);
+                String cn=rs.getString("COUNTRY");
+                verma.accumulate("COUNTRY", cn);
+                String d=rs.getString("ID");
+                verma.accumulate("ID", d);
                 
+                
+
+            } else {
+                status = "Wrong";
+                verma.accumulate("Status", status);
+                verma.accumulate("error", "wrong");
+            }
+        } catch (SQLException e) {
+            status = "error";
+            verma.accumulate("Status", status);
+            verma.accumulate("error", e.getLocalizedMessage());
+        }
+        return verma.toString();
+    }
+    
+       @Path("forgetpassword&{email}")
+    @GET
+    @Produces("application/json")
+    public String FORGETPWORD(@PathParam("email") String em) throws SQLException, IOException {
+        try {
+            NewClass o = new NewClass();
+            o.getConnection();
+            String sql = "select *from PERSONS where email='"+em+"'";
+            ResultSet rs = o.rss(sql);
+            if (rs.next()) {
+                status = "ok";
+                verma.accumulate("Status", status);
+                verma.accumulate("message", "successfully sent to your email");
 
             } else {
                 status = "Wrong";
