@@ -64,7 +64,7 @@ public class Internship {
     @Path("loginstudent&{studentid}&{dob}&{password}")
     @GET
     @Produces("application/json")
-    public String getXml(@PathParam("studentid") String id, @PathParam("dob") String date, @PathParam("password") String passwd) throws SQLException, IOException {
+    public String loginstud(@PathParam("studentid") String id, @PathParam("dob") String date, @PathParam("password") String passwd) throws SQLException, IOException {
         try {
             NewClass o = new NewClass();
             o.getConnection();
@@ -117,7 +117,62 @@ public class Internship {
         return verma.toString();
     }
     
+    @Path("loginemployer&{username}&{password}")
+    @GET
+    @Produces("application/json")
+    public String loginemp(@PathParam("username") String uname, @PathParam("password") String passw) throws SQLException, IOException {
+        try {
+            NewClass o = new NewClass();
+            o.getConnection();
+            String sql = "select *from PERSONS where username='"+uname+"'and password='"+passw+"' and  PERSON_ROLE='Employer'";
+            ResultSet rs = o.rss(sql);
+            if (rs.next()) {
+                status = "ok";
+                verma.accumulate("Status", status);
+                verma.accumulate("message", "welcome as employer");
+
+            } else {
+                status = "Wrong";
+                verma.accumulate("Status", status);
+                verma.accumulate("error", "wrong");
+            }
+        } catch (SQLException e) {
+            status = "error";
+            verma.accumulate("Status", status);
+            verma.accumulate("error", e.getLocalizedMessage());
+        }
+        return verma.toString();
+    } 
     
+    @Path("locations&{name}")
+    @GET
+    @Produces("application/json")
+    public String viewCGPA(@PathParam("name") String nme) throws SQLException, IOException {
+        try {
+            NewClass o = new NewClass();
+            o.getConnection();
+            
+            String sql = "SELECT*from LOCATION where STREET_NAME ='"+nme+"'";
+            ResultSet rs = o.rss(sql);
+            if (rs.next()) {
+                status = "ok";
+                verma.accumulate("Status", status);
+                String lname=rs.getString("LOCATION");
+                verma.accumulate("Location", lname);
+                
+
+            } else {
+                status = "Wrong";
+                verma.accumulate("Status", status);
+                verma.accumulate("error", "wrong");
+            }
+        } catch (SQLException e) {
+            status = "error";
+            verma.accumulate("Status", status);
+            verma.accumulate("error", e.getLocalizedMessage());
+        }
+        return verma.toString();
+    }
 }
 
 
