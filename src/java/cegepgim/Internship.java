@@ -61,14 +61,14 @@ public class Internship {
      * @throws java.sql.SQLException
      * @throws java.io.IOException
      */
-    @Path("loginstudent&{studentid}&{dob}&{password}")
+    @Path("loginstudent&{USERNAME}&{password}")
     @GET
     @Produces("application/json")
-    public String loginstud(@PathParam("studentid") String id, @PathParam("dob") String date, @PathParam("password") String passwd) throws SQLException, IOException {
+    public String loginstud(@PathParam("USERNAME") String id,  @PathParam("password") String passwd) throws SQLException, IOException {
         try {
             NewClass o = new NewClass();
             o.getConnection();
-            String sql = "select *from PERSONS where username='"+id+"'and DOB=TO_DATE('"+date+"','YYYY/MM/DD ') and PASSWORD='"+passwd+"' and  PERSON_ROLE='Student'";
+            String sql = "select *from PERSONS where username='"+id+"'and PASSWORD='"+passwd+"' and  PERSON_ROLE='Student'";
             ResultSet rs = o.rss(sql);
             if (rs.next()) {
                 status = "ok";
@@ -190,17 +190,167 @@ public class Internship {
        @Path("forgetpassword&{email}")
     @GET
     @Produces("application/json")
-    public String FORGETPWORD(@PathParam("email") String em) throws SQLException, IOException {
+    public String FORGETPASSWORD(@PathParam("email") String email) throws SQLException, IOException {
         try {
             NewClass o = new NewClass();
             o.getConnection();
-            String sql = "select *from PERSONS where email='"+em+"'";
+            String sql = "select *from PERSONS where email='"+email+"'";
             ResultSet rs = o.rss(sql);
             if (rs.next()) {
                 status = "ok";
                 verma.accumulate("Status", status);
                 verma.accumulate("message", "successfully sent to your email");
 
+            } else {
+                status = "Wrong";
+                verma.accumulate("Status", status);
+                verma.accumulate("error", "wrong");
+            }
+        } catch (SQLException e) {
+            status = "error";
+            verma.accumulate("Status", status);
+            verma.accumulate("error", e.getLocalizedMessage());
+        }
+        return verma.toString();
+    }
+    
+    @Path("viewprofilestudent&{USERNAME}")
+    @GET
+    @Produces("application/json")
+    public String ViewProfileStudent(@PathParam("USERNAME") String NAME) throws SQLException, IOException {
+        try {
+            NewClass o = new NewClass();
+            o.getConnection();
+            
+            String sql = "SELECT * from person where USERNAME ='"+NAME+"'";
+            ResultSet rs = o.rss(sql);
+            if (rs.next()) {
+                status = "ok";
+                verma.accumulate("Status", status);
+                String FNAME=rs.getString("F_NAME");
+                verma.accumulate("F_NAME", FNAME);
+                String Lname=rs.getString("L_NAME");
+                verma.accumulate("L_NAME", Lname);
+                String PH_NO=rs.getString("PHONE_NO");
+                verma.accumulate("PHONE_NO", PH_NO);
+                String MAIL=rs.getString("EMAIL");
+                verma.accumulate("EMAIL", MAIL);
+                String ADD=rs.getString("ADDRESS");
+                verma.accumulate("ADDRESS", ADD);
+                String DB=rs.getString("DOB");
+                verma.accumulate("DOB", DB);
+                String CG=rs.getString("CGPA");
+                verma.accumulate("CGPA", CG);
+                
+                
+
+            } else {
+                status = "Wrong";
+                verma.accumulate("Status", status);
+                verma.accumulate("error", "wrong");
+            }
+        } catch (SQLException e) {
+            status = "error";
+            verma.accumulate("Status", status);
+            verma.accumulate("error", e.getLocalizedMessage());
+        }
+        return verma.toString();
+    }
+    
+     @Path("ViewProfileEmployer&{USERNAME}")
+    @GET
+    @Produces("application/json")
+    public String ViewProfileEmployer(@PathParam("USERNAME") String NAME2) throws SQLException, IOException {
+        try {
+            NewClass o = new NewClass();
+            o.getConnection();
+            
+            String sql = "SELECT * from person where USERNAME ='"+NAME2+"'";
+            ResultSet rs = o.rss(sql);
+            if (rs.next()) {
+                status = "ok";
+                verma.accumulate("Status", status);
+                String FNAME=rs.getString("F_NAME");
+                verma.accumulate("F_NAME", FNAME);
+                String Lname=rs.getString("L_NAME");
+                verma.accumulate("L_NAME", Lname);
+                String PH_NO=rs.getString("PHONE_NO");
+                verma.accumulate("PHONE_NO", PH_NO);
+                String MAIL=rs.getString("EMAIL");
+                verma.accumulate("EMAIL", MAIL);
+                String ADD=rs.getString("ADDRESS");
+                verma.accumulate("ADDRESS", ADD);
+                String DB=rs.getString("DOB");
+                verma.accumulate("DOB", DB);
+                String FID=rs.getString("F_ID");
+                verma.accumulate("F_ID", FID);
+                String CID=rs.getString("C_ID");
+                verma.accumulate("C_ID", FID);
+                
+                
+
+            } else {
+                status = "Wrong";
+                verma.accumulate("Status", status);
+                verma.accumulate("error", "wrong");
+            }
+        } catch (SQLException e) {
+            status = "error";
+            verma.accumulate("Status", status);
+            verma.accumulate("error", e.getLocalizedMessage());
+        }
+        return verma.toString();
+    }
+    
+       @Path("UpdateEmployerProfile&{USERNAME}&{F_name}&{L_name}&{address}&{contact}")
+    @GET
+    @Produces("application/json")
+    public String UpdateEmployerProfile(@PathParam("F_name") String fnme,@PathParam("L_name") String lnme, @PathParam("address") String adress, @PathParam("contact") String con) throws SQLException, IOException {
+        try{
+            NewClass o = new NewClass();
+            o.getConnection();
+            
+            String UPDATE = "UPDATE INTO FINALP1.PERSONS (ID, PERSON_ROLE, F_NAME, L_NAME, PHONE_NO, ADDRESS) VALUES (seq_person.nextval, 'Employer', '"+fnme+"', '"+lnme+"', '"+con+"', '"+adress+"')"; 
+            ResultSet rs2=o.rss(UPDATE);
+            rs2.close();
+           
+            
+            if (rs2.next()) {
+                status = "ok";
+                verma.accumulate("Status", status);
+                verma.accumulate("message", "Profile succesfully updated");
+            
+            } else {
+                status = "Wrong";
+                verma.accumulate("Status", status);
+                verma.accumulate("error", "wrong");
+            }
+        } catch (SQLException e) {
+            status = "error";
+            verma.accumulate("Status", status);
+            verma.accumulate("error", e.getLocalizedMessage());
+        }
+        return verma.toString();
+    }
+    
+    @Path("UpdateEmployerProfile&{USERNAME}&{F_name}&{L_name}&{address}&{contact}")
+    @GET
+    @Produces("application/json")
+    public String UpdateStudentProfile(@PathParam("CGPA") String CGP,@PathParam("COURSE") String COUR, @PathParam("address") String adress, @PathParam("contact") String con) throws SQLException, IOException {
+        try{
+            NewClass o = new NewClass();
+            o.getConnection();
+            
+            String UPDATE = "UPDATE INTO FINALP1.PERSONS (ID, PERSON_ROLE, CGPA, COURSE, PHONE_NO, ADDRESS) VALUES (seq_person.nextval, 'Employer', '"+CGP+"', '"+COUR+"', '"+con+"', '"+adress+"')"; 
+            ResultSet rs2=o.rss(UPDATE);
+            rs2.close();
+           
+            
+            if (rs2.next()) {
+                status = "ok";
+                verma.accumulate("Status", status);
+                verma.accumulate("message", "Profile succesfully updated");
+            
             } else {
                 status = "Wrong";
                 verma.accumulate("Status", status);
