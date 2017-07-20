@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 /**
  *
- * @author rajbir
+ * @author Naina
  */
 public class GetCompanyProfile extends HttpServlet {
 

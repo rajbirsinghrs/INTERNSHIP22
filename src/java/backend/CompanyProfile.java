@@ -25,7 +25,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
- * @author Rajbir
+ * @author Rahul Bhardwaj
  */
 public class CompanyProfile extends HttpServlet {
 
