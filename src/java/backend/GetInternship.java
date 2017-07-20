@@ -20,7 +20,7 @@ import org.json.JSONObject;
 
 /**
  *
- * @author Rahul Bhardwaj
+ * @author Rajbir
  */
 public class GetInternship extends HttpServlet {
 

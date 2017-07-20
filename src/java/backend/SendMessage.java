@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Naina
+ * @author Rajbir
  */
 public class SendMessage extends HttpServlet {
 

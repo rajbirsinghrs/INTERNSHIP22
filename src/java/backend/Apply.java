@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Rahul Bhardwaj
+ * @author Rajbir
  */
 public class Apply extends HttpServlet {
 

@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 /**
  *
- * @author Naina
+ * @author Rajbir
  */
 public class Outbox extends HttpServlet {
 

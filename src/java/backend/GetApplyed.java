@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 /**
  *
- * @author Rahul Bhardwaj
+ * @author Rajbir
  */
 public class GetApplyed extends HttpServlet {
 
